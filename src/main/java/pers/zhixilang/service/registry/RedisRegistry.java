@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author zhixilang
@@ -28,7 +27,7 @@ public class RedisRegistry {
 
     private RedisUrl redisURL;
 
-    private AtomicInteger atomicInteger = new AtomicInteger(0);
+    private List<RouteBean> routeBeans;
 
     public static RedisRegistry getInstance(RedisUrl redisURL) {
         // double lock
@@ -44,6 +43,8 @@ public class RedisRegistry {
 
     public void doRegistry(List<RouteBean> routeBeans) throws Exception {
 
+        this.routeBeans = routeBeans;
+
         Jedis jedis = jedisPool.getResource();
         while (jedis.setnx(Constants.LOCK_SERVICE_ROUTE_REGISTRY_KEY, Constants.LOCK_SERVICE_ROUTE_REGISTRY_VALUE) == 0) {
             Thread.sleep(300L);
@@ -55,25 +56,27 @@ public class RedisRegistry {
         }
 
         jedis.del(Constants.LOCK_SERVICE_ROUTE_REGISTRY_KEY);
+        jedis.close();
 
         long expirePeriod = redisURL.getPeriod() == null ? Constants.EXPIRE_PERIOD : redisURL.getPeriod();
-        expireExecutor.scheduleWithFixedDelay(() -> registry(routeBeans), 0L, expirePeriod, TimeUnit.MILLISECONDS);
+
+        expireExecutor.scheduleWithFixedDelay(this::registry, 0L, expirePeriod, TimeUnit.MILLISECONDS);
     }
 
+    private void registry() {
+        try {
+            Jedis jedis = jedisPool.getResource();
 
-    private void registry(List<RouteBean> routeBeans) {
-        System.out.println("===第 " + atomicInteger.getAndIncrement() + " 次");
-        Jedis jedis = jedisPool.getResource();
+            for (RouteBean routeBean: routeBeans) {
 
-        for (RouteBean routeBean: routeBeans) {
-            String member = routeBean.getPrefix() + "@" + routeBean.getRoute();
-            Double time = jedis.zscore(Constants.KEY_REDIS_SERVICE_REGISTRY, member);
-            if (time == null) {
-                jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, Constants.DEFAULT_SCORE, member);
-            } else {
-                jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, time + redisURL.getPeriod(), member);
+                String member = routeBean.getPrefix() + "@" + routeBean.getRoute();
+
+                jedis.publish(Constants.CHANNEL_SERVICE_REGISTRY, member);
             }
-            jedis.publish(Constants.CHANNEL_SERVICE_REGISTRY, member);
+
+            jedis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -84,11 +87,12 @@ public class RedisRegistry {
 
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 
+        config.setMaxTotal(8);
         // TODO 参数判断
         jedisPool = new JedisPool(config, redisURL.getHost(), redisURL.getPort(), redisURL.getTimeout(), redisURL.getPassword());
 
         expireExecutor = new ScheduledThreadPoolExecutor(3, new NamedThreadFactory(
                 "service-registry-retry" +
-                        "-expire-timer", true));
+                        "-timer", true));
     }
 }

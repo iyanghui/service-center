@@ -47,38 +47,19 @@ public class RedisDiscover {
 
     public void doDiscover(RedisUrl redisURL) {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        config.setMaxTotal(20);
 
         // TODO 参数判断
         jedisPool = new JedisPool(config, redisURL.getHost(), redisURL.getPort(), redisURL.getTimeout(), redisURL.getPassword());
 
         discoverExecutor = new ScheduledThreadPoolExecutor(1, new NamedThreadFactory("service-discover" +
                 "-retry" +
-                "-expire-timer", true));
+                "-timer", true));
 
         this.period = redisURL.getPeriod() == null ? Constants.EXPIRE_PERIOD : redisURL.getPeriod();
 
-        Jedis jedis = jedisPool.getResource();
-        Set<String> urls = jedis.zrange(Constants.KEY_REDIS_SERVICE_REGISTRY, 0, -1);
-
-        try {
-            for (String url : urls) {
-                if (Constants.DEFAULT_SCORE == jedis.zscore(Constants.KEY_REDIS_SERVICE_REGISTRY, url)) {
-                    // 以upstream机器时间为准
-                    while (jedis.setnx(Constants.LOCK_SERVICE_SCORE_INIT, Constants.LOCK_SERVICE_SCORE_INIT_VALUE) == 0) {
-                        Thread.sleep(300L);
-                    }
-                    jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, System.currentTimeMillis(), url);
-                    jedis.del(Constants.LOCK_SERVICE_SCORE_INIT);
-                }
-                RouteManage.routeMap = routeMapInit(urls);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        discoverExecutor.scheduleWithFixedDelay(this::discover, 0, period, TimeUnit.MILLISECONDS);
         subscribe();
-
-        discoverExecutor.scheduleWithFixedDelay(this::discover, 0, 0, TimeUnit.MILLISECONDS);
     }
 
     private void subscribe() {
@@ -86,13 +67,22 @@ public class RedisDiscover {
         jedis.subscribe(new JedisPubSub() {
             @Override
             public void onMessage(String channel, String message) {
-                // 更新score
-                /*double score = jedis.zscore(Constants.KEY_REDIS_SERVICE_REGISTRY, message);
-                jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, score + period, message);*/
-
-                System.out.println("===message: " + message);
+                heartBeat(message);
             }
         }, Constants.CHANNEL_SERVICE_REGISTRY);
+    }
+
+    private void heartBeat(String url) {
+        Jedis jedis = jedisPool.getResource();
+        // 更新score
+        double score = jedis.zscore(Constants.KEY_REDIS_SERVICE_REGISTRY, url);
+        if (Constants.DEFAULT_SCORE == score) {
+            // 以upstream机器时间为准
+            jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, System.currentTimeMillis(), url);
+        } else {
+            jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, score + period, url);
+        }
+        jedis.close();
     }
 
     private void discover() {
@@ -100,7 +90,7 @@ public class RedisDiscover {
         Set<String> urls = jedis.zrangeByScore(Constants.KEY_REDIS_SERVICE_REGISTRY,
                 System.currentTimeMillis() - 2 * period, System.currentTimeMillis());
         RouteManage.routeMap = routeMapInit(urls);
-
+        jedis.close();
     }
 
     private Map<String, Set<String>> routeMapInit(Set<String> urls) {
