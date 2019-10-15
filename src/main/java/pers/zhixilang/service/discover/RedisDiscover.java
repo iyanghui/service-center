@@ -68,7 +68,6 @@ public class RedisDiscover {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
         config.setMaxTotal(20);
 
-        // TODO 参数判断
         jedisPool = new JedisPool(config, redisURL.getHost(), redisURL.getPort(), redisURL.getTimeout(), redisURL.getPassword());
 
         discoverExecutor = new ScheduledThreadPoolExecutor(1, new NamedThreadFactory("service-discover" +

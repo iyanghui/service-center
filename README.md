@@ -1,8 +1,18 @@
 ##### 简易版的服务注册与发现中心，注册中心使用redis实现。
 
+1. 引入依赖
 
+   ```xml
+   <dependency>
+               <groupId>pers.zhixilang</groupId>
+               <artifactId>service-center</artifactId>
+               <version>1.0-SNAPSHOT</version>
+           </dependency>
+   ```
 
-1. 新增配置文件route.xml：
+   
+
+2. 新增配置文件route.xml：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -25,32 +35,32 @@
 
 
 
-2. 使配置生效。
+3. 使配置生效。
 
-   - 注解方式
+- 注解方式
 
-     ```java
-     @SpringBootApplication
-     @ImportResource({"route.xml"})
-     public class MainApplication {
-         public static void main(String[] args) {
-             SpringApplication application = new SpringApplication(MainApplication.class);
-             application.run(args);
-         }
-     }
-     ```
+  ```java
+  @SpringBootApplication
+  @ImportResource({"route.xml"})
+  public class MainApplication {
+      public static void main(String[] args) {
+          SpringApplication application = new SpringApplication(MainApplication.class);
+          application.run(args);
+      }
+  }
+  ```
 
-     
+  
 
-   - API方式
+- API方式
 
-     ```java
-     public class MainApplication {
-         public static void main(String[] args) throws Exception{
-             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("route.xml");
-             }
-       }
-     ```
+  ```java
+  public class MainApplication {
+      public static void main(String[] args) throws Exception{
+          ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("route.xml");
+          }
+    }
+  ```
 
 
 
