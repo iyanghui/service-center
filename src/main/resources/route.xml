@@ -10,8 +10,8 @@
         <route:route prefix="/api/bill" route="http://127.0.0.1:9898/api/bill" />
         <route:route prefix="/api/user" route="http://127.0.0.1:9898/api/user" />
 
-        <route:registry host="127.0.0.1" port="6379" password="Kingdom_123#@" timeout="1000" period="1000"/>
+        <route:registry host="127.0.0.1" port="6379" password="" timeout="1000" period="1000"/>
 
 
-        <route:discover  host="127.0.0.1" port="6379" password="Kingdom_123#@" timeout="1000" period="1000"/>
+        <route:discover  host="127.0.0.1" port="6379" password="" timeout="1000" period="1000"/>
 </beans>
