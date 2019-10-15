@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * @author zhixilang
@@ -19,14 +20,26 @@ import java.util.concurrent.TimeUnit;
  * @date 2019-10-02 19:51
  */
 public class RedisRegistry {
+
+    private static final Logger LOGGER = Logger.getLogger(RedisRegistry.class.getName());
+
+    /**
+     * 线程池 服务注册
+     */
     private final ScheduledExecutorService expireExecutor;
 
+    /**
+     * jedis池
+     */
     private JedisPool jedisPool;
 
     private static RedisRegistry instance = null;
 
     private RedisUrl redisURL;
 
+    /**
+     * 注册路由列表
+     */
     private List<RouteBean> routeBeans;
 
     public static RedisRegistry getInstance(RedisUrl redisURL) {
@@ -51,8 +64,9 @@ public class RedisRegistry {
         }
 
         for (RouteBean routeBean: routeBeans) {
-            jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, Constants.DEFAULT_SCORE,
-                    routeBean.getPrefix() + "@" + routeBean.getRoute());
+            String member = routeBean.getPrefix() + Constants.SEPARATOR_ROUTE_URL + routeBean.getRoute();
+            jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, Constants.DEFAULT_SCORE, member);
+            LOGGER.info("service [{"+ member +"}] registry success!");
         }
 
         jedis.del(Constants.LOCK_SERVICE_ROUTE_REGISTRY_KEY);
@@ -60,18 +74,18 @@ public class RedisRegistry {
 
         long expirePeriod = redisURL.getPeriod() == null ? Constants.EXPIRE_PERIOD : redisURL.getPeriod();
 
-        expireExecutor.scheduleWithFixedDelay(this::registry, 0L, expirePeriod, TimeUnit.MILLISECONDS);
+        expireExecutor.scheduleWithFixedDelay(this::hearBeat, 0L, expirePeriod, TimeUnit.MILLISECONDS);
     }
 
-    private void registry() {
+    private void hearBeat() {
         try {
             Jedis jedis = jedisPool.getResource();
 
             for (RouteBean routeBean: routeBeans) {
 
-                String member = routeBean.getPrefix() + "@" + routeBean.getRoute();
-
+                String member = routeBean.getPrefix() + Constants.SEPARATOR_ROUTE_URL + routeBean.getRoute();
                 jedis.publish(Constants.CHANNEL_SERVICE_REGISTRY, member);
+//                LOGGER.info(" [{"+ member +"}] hearBeat...");
             }
 
             jedis.close();
@@ -87,11 +101,10 @@ public class RedisRegistry {
 
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 
-        config.setMaxTotal(8);
         // TODO 参数判断
         jedisPool = new JedisPool(config, redisURL.getHost(), redisURL.getPort(), redisURL.getTimeout(), redisURL.getPassword());
 
-        expireExecutor = new ScheduledThreadPoolExecutor(3, new NamedThreadFactory(
+        expireExecutor = new ScheduledThreadPoolExecutor(1, new NamedThreadFactory(
                 "service-registry-retry" +
                         "-timer", true));
     }

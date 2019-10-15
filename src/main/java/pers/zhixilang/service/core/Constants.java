@@ -19,7 +19,7 @@ public class Constants {
     /**
      * 过期周期 心跳
      */
-    public static final Long EXPIRE_PERIOD = 6000L;
+    public static final Long EXPIRE_PERIOD = 3000L;
 
     /**
      * 并发锁 服务注册key
@@ -45,4 +45,9 @@ public class Constants {
      * 默认score
      */
     public static final double DEFAULT_SCORE = 999999D;
+
+    /**
+     * route分隔符 prefix@route
+     */
+    public static final String SEPARATOR_ROUTE_URL = "@";
 }
