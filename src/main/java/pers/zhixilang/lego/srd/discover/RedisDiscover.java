@@ -1,11 +1,11 @@
-package pers.zhixilang.service.discover;
+package pers.zhixilang.lego.srd.discover;
 
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import pers.zhixilang.service.common.NamedThreadFactory;
-import pers.zhixilang.service.common.RedisUrl;
-import pers.zhixilang.service.core.Constants;
-import pers.zhixilang.service.core.RouteManage;
+import pers.zhixilang.lego.srd.common.NamedThreadFactory;
+import pers.zhixilang.lego.srd.common.RedisUrl;
+import pers.zhixilang.lego.srd.core.Constants;
+import pers.zhixilang.lego.srd.core.RouteManage;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
@@ -99,6 +99,7 @@ public class RedisDiscover {
     private void updateScore(String url) {
         Jedis jedis = jedisPool.getResource();
         // 以upstream机器时间为准
+        // TODO 多个upstream,并且机器时间不一致!!!
         jedis.zadd(Constants.KEY_REDIS_SERVICE_REGISTRY, System.currentTimeMillis(), url);
 
         jedis.close();

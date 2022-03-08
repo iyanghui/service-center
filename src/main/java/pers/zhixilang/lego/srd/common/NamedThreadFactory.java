@@ -1,4 +1,4 @@
-package pers.zhixilang.service.common;
+package pers.zhixilang.lego.srd.common;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;

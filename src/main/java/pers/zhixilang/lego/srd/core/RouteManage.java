@@ -1,4 +1,4 @@
-package pers.zhixilang.service.core;
+package pers.zhixilang.lego.srd.core;
 
 import java.util.Map;
 import java.util.Random;

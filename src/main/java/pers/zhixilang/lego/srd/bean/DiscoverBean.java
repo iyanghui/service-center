@@ -1,25 +1,15 @@
-package pers.zhixilang.service.bean;
+package pers.zhixilang.lego.srd.bean;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import pers.zhixilang.service.common.RedisUrl;
-import pers.zhixilang.service.registry.RedisRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import pers.zhixilang.lego.srd.common.RedisUrl;
+import pers.zhixilang.lego.srd.discover.RedisDiscover;
 
 /**
  * @author zhixilang
  * @version 1.0
  * @date 2019-10-03 11:11
  */
-public class RegistryBean implements InitializingBean, ApplicationContextAware {
-
-
-    private ApplicationContext applicationContext;
+public class DiscoverBean implements InitializingBean {
 
     private String id;
 
@@ -33,31 +23,16 @@ public class RegistryBean implements InitializingBean, ApplicationContextAware {
 
     private Long period;
 
-
     @Override
     public void afterPropertiesSet() throws Exception {
-
-        Map<String, RouteBean> routeBeanMap = applicationContext.getBeansOfType(RouteBean.class);
-
-        if (routeBeanMap == null) {
-            throw new IllegalStateException("route is null");
-        }
-
         RedisUrl url = new RedisUrl();
         url.setHost(host)
                 .setPort(port)
                 .setPassword(password)
                 .setTimeout(timeout)
                 .setPeriod(period);
-
-        RedisRegistry redisRegistry = RedisRegistry.getInstance(url);
-        List<RouteBean> routeBeans = new ArrayList<>(routeBeanMap.values());
-        redisRegistry.doRegistry(routeBeans);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        RedisDiscover redisDiscover = RedisDiscover.getInstance();
+        redisDiscover.doDiscover(url);
     }
 
     public String getId() {
@@ -107,5 +82,4 @@ public class RegistryBean implements InitializingBean, ApplicationContextAware {
     public void setPeriod(Long period) {
         this.period = period;
     }
-
 }

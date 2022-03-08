@@ -1,4 +1,4 @@
-package pers.zhixilang.service;
+package pers.zhixilang.lego.srd;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

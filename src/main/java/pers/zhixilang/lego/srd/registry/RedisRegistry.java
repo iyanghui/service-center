@@ -1,10 +1,10 @@
-package pers.zhixilang.service.registry;
+package pers.zhixilang.lego.srd.registry;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import pers.zhixilang.service.bean.RouteBean;
-import pers.zhixilang.service.common.NamedThreadFactory;
-import pers.zhixilang.service.common.RedisUrl;
-import pers.zhixilang.service.core.Constants;
+import pers.zhixilang.lego.srd.bean.RouteBean;
+import pers.zhixilang.lego.srd.common.NamedThreadFactory;
+import pers.zhixilang.lego.srd.common.RedisUrl;
+import pers.zhixilang.lego.srd.core.Constants;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 

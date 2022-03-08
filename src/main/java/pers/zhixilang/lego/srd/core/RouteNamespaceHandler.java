@@ -1,9 +1,9 @@
-package pers.zhixilang.service.core;
+package pers.zhixilang.lego.srd.core;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
-import pers.zhixilang.service.bean.DiscoverBean;
-import pers.zhixilang.service.bean.RegistryBean;
-import pers.zhixilang.service.bean.RouteBean;
+import pers.zhixilang.lego.srd.bean.DiscoverBean;
+import pers.zhixilang.lego.srd.bean.RegistryBean;
+import pers.zhixilang.lego.srd.bean.RouteBean;
 
 /**
  * 自定义schema解析器

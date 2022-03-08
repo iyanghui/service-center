@@ -1,4 +1,4 @@
-package pers.zhixilang.service.bean;
+package pers.zhixilang.lego.srd.bean;
 
 /**
  * @author zhixilang

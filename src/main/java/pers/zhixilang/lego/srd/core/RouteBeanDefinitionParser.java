@@ -1,4 +1,4 @@
-package pers.zhixilang.service.core;
+package pers.zhixilang.lego.srd.core;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
-import pers.zhixilang.service.bean.DiscoverBean;
-import pers.zhixilang.service.bean.RegistryBean;
-import pers.zhixilang.service.bean.RouteBean;
+import pers.zhixilang.lego.srd.bean.DiscoverBean;
+import pers.zhixilang.lego.srd.bean.RegistryBean;
+import pers.zhixilang.lego.srd.bean.RouteBean;
 
 /**
  * @author zhixilang

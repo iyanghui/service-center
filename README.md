@@ -4,15 +4,14 @@
 
    ```xml
    <dependency>
-               <groupId>pers.zhixilang</groupId>
+               <groupId>pers.zhixilang.lego</groupId>
                <artifactId>service-center</artifactId>
-               <version>1.0-SNAPSHOT</version>
+               <version>1.0.0-SNAPSHOT</version>
            </dependency>
    ```
 
-   
 
-2. 新增配置文件route.xml：
+2. 新增配置文件route.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -27,15 +26,16 @@
         <route:route prefix="/api/bill" route="http://127.0.0.1:9898/api/bill" />
         <route:route prefix="/api/user" route="http://127.0.0.1:9898/api/user" />
 
-        <route:registry host="127.0.0.1" port="6379" password="" timeout="1000"
-                        period="3000" />
+        <route:registry host="127.0.0.1" port="6379" password="" timeout="1000" period="3000" />
+
+        <route:discover  host="127.0.0.1" port="6379" password="" timeout="1000" period="1000"/>
 </beans>
 
 ```
 
 
 
-3. 使配置生效。
+3. 使配置生效
 
 - 注解方式
 
