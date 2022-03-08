@@ -1,7 +1,7 @@
 package pers.zhixilang.lego.srd.core;
 
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,19 +14,25 @@ public class RouteManage {
 
     /**
      * 存放所有路由
+     * key: path prefix
+     * value: List => remote url
      */
     public static ConcurrentHashMap<String, Set<String>> routeMap;
 
-    public static String getRoute(String url) {
+    /**
+     * 获取remote URL集合
+     * @param prefix path prefix
+     * @return 路由集合
+     */
+    public static Set<String> getRoutes(String prefix) {
         if (routeMap == null) {
-            return "";
+            return new HashSet<>();
         }
         for (Map.Entry<String, Set<String>> entry: routeMap.entrySet()) {
-            if (url.startsWith(entry.getKey())) {
-                // simple load balance
-                return entry.getKey() + Constants.SEPARATOR_ROUTE_URL + entry.getValue().toArray()[new Random().nextInt(entry.getValue().size())].toString();
+            if (prefix.startsWith(entry.getKey())) {
+                return entry.getValue();
             }
         }
-        return "";
+        return new HashSet<>();
     }
 }
