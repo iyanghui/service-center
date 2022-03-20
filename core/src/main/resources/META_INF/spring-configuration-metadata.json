@@ -1,0 +1,89 @@
+{"properties": [
+  {
+    "name": "lego.srd.server",
+    "type": "pers.zhixilang.lego.srd.core.property.SrdProperty",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty",
+    "description": "as netty server port"
+  },
+  {
+    "name": "lego.srd.server.port",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Server",
+    "description": "as netty server port"
+  },
+  {
+    "name": "lego.srd.server.enable-self-preservation",
+    "type": "java.lang.Boolean",
+    "defaultValue": false,
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Server",
+    "description": "是否开启自我保护"
+  },
+  {
+    "name": "lego.srd.server.eviction-interval-ms",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Server",
+    "description": "清除无效服务实例间隔(ms)"
+  },
+  {
+    "name": "lego.srd.server.sync-cache-interval-ms",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Server",
+    "description": "缓存同步时间间隔(ms)"
+  },
+  {
+    "name": "lego.srd.client.registry-url",
+    "type": "java.lang.String",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Client",
+    "description": "缓存同步时间间隔(ms)"
+  },
+  {
+    "name": "lego.srd.client.fetch-interval-ms",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Client",
+    "description": "从server端拉取配置时间间隔(ms)"
+  },
+  {
+    "name": "lego.srd.client.heart-beat-interval-ms",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Client",
+    "description": "心跳时间间隔(ms)"
+  },
+  {
+    "name": "lego.srd.instance.app-name",
+    "type": "java.lang.String",
+    "defaultValue": "UNKNOW",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Instance",
+    "description": "应用名称"
+  },
+  {
+    "name": "lego.srd.instance.ip",
+    "type": "java.lang.String",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Instance",
+    "description": "实例地址,ip"
+  },
+  {
+    "name": "lego.srd.instance.host",
+    "type": "java.lang.String",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Instance",
+    "description": "host name"
+  },
+  {
+    "name": "lego.srd.instance.choose-eth",
+    "type": "java.lang.String",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Instance",
+    "description": "(多网卡下)选择的网卡"
+  },
+  {
+    "name": "lego.srd.instance.prefer-ip",
+    "type": "java.lang.Boolean",
+    "defaultValue": true,
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Instance",
+    "description": "(相较于hostName)优先使用ip"
+  },
+  {
+    "name": "lego.srd.instance.port",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.core.property.SrdProperty$Instance",
+    "description": "实例端口"
+  }
+]}

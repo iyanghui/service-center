@@ -4,8 +4,8 @@
 
    ```xml
    <dependency>
-               <groupId>pers.zhixilang.lego</groupId>
-               <artifactId>service-center</artifactId>
+               <groupId>pers.zhixilang.lego.srd</groupId>
+               <artifactId>parent</artifactId>
                <version>1.0.0-SNAPSHOT</version>
            </dependency>
    ```
@@ -66,3 +66,11 @@
 
 
 
+# 协议格式
+## req
+1: event
+2~8: id
+8~12：消息长度 
+14 ~ n: 消息内容
+
+## res 

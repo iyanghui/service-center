@@ -1,0 +1,9 @@
+lego:
+  srd:
+    server:
+      port: 18001
+      enable-self-preservation: false
+
+logging:
+  level:
+    pers.zhixilang.lego.srd: debug

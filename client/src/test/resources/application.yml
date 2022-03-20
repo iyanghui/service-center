@@ -1,0 +1,10 @@
+lego:
+  srd:
+    client:
+      registry-url: '127.0.0.1:18001'
+    instance:
+      app-name: demo-client
+
+logging:
+  level:
+    pers.zhixilang.lego.srd: debug
