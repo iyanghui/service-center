@@ -11,7 +11,7 @@
     <modules>
         <module>server</module>
         <module>client</module>
-        <module>core</module>
+        <module>base</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -38,7 +38,7 @@
         <dependencies>
             <dependency>
                 <groupId>pers.zhixilang.lego.srd</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>base</artifactId>
                 <version>${version}</version>
             </dependency>
 

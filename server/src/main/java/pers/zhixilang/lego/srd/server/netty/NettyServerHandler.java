@@ -5,9 +5,9 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
-import pers.zhixilang.lego.srd.core.Request;
-import pers.zhixilang.lego.srd.core.pojo.InstanceInfo;
-import pers.zhixilang.lego.srd.server.SrdServerContext;
+import pers.zhixilang.lego.srd.base.Request;
+import pers.zhixilang.lego.srd.base.pojo.InstanceInfo;
+import pers.zhixilang.lego.srd.server.core.SrdServerContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     /**
-     * {@code <channelId, instanceId>}
+     * {@code <channelId, instanceInfo>}
      */
     private Map<ChannelId, InstanceInfo> channelInstanceMap = new HashMap<>();
 

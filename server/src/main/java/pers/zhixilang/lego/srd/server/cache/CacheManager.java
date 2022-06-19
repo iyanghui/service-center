@@ -1,7 +1,8 @@
 package pers.zhixilang.lego.srd.server.cache;
 
-import pers.zhixilang.lego.srd.core.pojo.InstanceInfo;
-import pers.zhixilang.lego.srd.core.pojo.Value;
+import pers.zhixilang.lego.srd.base.pojo.InstanceInfo;
+import pers.zhixilang.lego.srd.base.pojo.Value;
+import pers.zhixilang.lego.srd.server.config.SrdServerConfig;
 
 /**
  * @author zhixilang
@@ -41,8 +42,14 @@ public interface CacheManager {
     void down(InstanceInfo instance);
 
     /**
-     *
+     * 超时未续约-剔除
      * @param instance 实例
      */
     void evict(InstanceInfo instance);
+
+    /**
+     * 获取server config
+     * @return SrdServerConfig
+     */
+    SrdServerConfig getConfig();
 }

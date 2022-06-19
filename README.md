@@ -1,4 +1,5 @@
-##### 简易版的服务注册与发现中心，`server`和`client`之间通信使用[Netty](https://netty.io/wiki/user-guide-for-4.x.html)实现。
+简易版的服务注册与发现中心，`server`和`client`之间通信使用[Netty](https://netty.io/wiki/user-guide-for-4.x.html)实现。
+
 -  [ ] 自定义协议
 
 
@@ -13,3 +14,18 @@
 */
 
 https://www.cnblogs.com/caoweixiong/p/14663492.html
+
+- [ ] 服务端数据存储在内存，三级缓存
+
+- [ ] 客户端使用**透明多级缓存SDK**接入
+
+内存
+cacheLoader加载远端存储
+内存与远端存储交互
+    1. 远存需具备交互能力：通知、处理
+    通知？！ 
+        网络问题，通知丢失
+            =》 还是依赖客户端的主动获取，一定程度
+            
+        成本大于了投入
+        

@@ -1,0 +1,33 @@
+{"properties": [
+  {
+    "name": "lego.srd.server",
+    "type": "pers.zhixilang.lego.srd.server.config.SrdServerConfig",
+    "sourceType": "pers.zhixilang.lego.srd.server.config.SrdServerConfig",
+    "description": "as netty server port"
+  },
+  {
+    "name": "lego.srd.server.port",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.server.config.SrdServerConfig$Server",
+    "description": "as netty server port"
+  },
+  {
+    "name": "lego.srd.server.enable-self-preservation",
+    "type": "java.lang.Boolean",
+    "defaultValue": false,
+    "sourceType": "pers.zhixilang.lego.srd.server.config.SrdServerConfig$Server",
+    "description": "是否开启自我保护"
+  },
+  {
+    "name": "lego.srd.server.eviction-interval-ms",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.server.config.SrdServerConfig$Server",
+    "description": "清除无效服务实例间隔(ms)"
+  },
+  {
+    "name": "lego.srd.server.sync-cache-interval-ms",
+    "type": "java.lang.Integer",
+    "sourceType": "pers.zhixilang.lego.srd.server.config.SrdServerConfig$Server",
+    "description": "缓存同步时间间隔(ms)"
+  }
+]}

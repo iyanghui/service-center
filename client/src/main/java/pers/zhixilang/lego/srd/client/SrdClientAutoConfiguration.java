@@ -3,8 +3,8 @@ package pers.zhixilang.lego.srd.client;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pers.zhixilang.lego.srd.client.cache.InstanceManager;
-import pers.zhixilang.lego.srd.core.property.SrdProperty;
+import pers.zhixilang.lego.srd.client.config.SrdClientConfig;
+import pers.zhixilang.lego.srd.client.core.ClientBootstrap;
 
 /**
  * @author zhixilang
@@ -12,18 +12,13 @@ import pers.zhixilang.lego.srd.core.property.SrdProperty;
  * date 2022-03-16 11:04
  */
 @Configuration
-@EnableConfigurationProperties({SrdProperty.class})
+@EnableConfigurationProperties({SrdClientConfig.class})
 public class SrdClientAutoConfiguration {
 
     @Bean
-    public InstanceManager instanceManager(SrdProperty property) {
-        return new InstanceManager(property);
-    }
-
-    @Bean
-    public ClientBootstrap clientBootstrap(SrdProperty property) {
+    public ClientBootstrap clientBootstrap(SrdClientConfig config) {
         ClientBootstrap clientBootstrap = new ClientBootstrap();
-        clientBootstrap.run(property);
+        clientBootstrap.run(config);
         return clientBootstrap;
     }
 }

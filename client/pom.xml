@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>pers.zhixilang.lego.srd</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>base</artifactId>
         </dependency>
 
         <dependency>

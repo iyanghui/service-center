@@ -1,7 +1,7 @@
 package pers.zhixilang.lego.srd.server.pojo;
 
 import lombok.Data;
-import pers.zhixilang.lego.srd.core.pojo.InstanceInfo;
+import pers.zhixilang.lego.srd.base.pojo.InstanceInfo;
 
 /**
  * @author zhixilang

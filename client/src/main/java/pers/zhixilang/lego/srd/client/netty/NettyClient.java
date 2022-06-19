@@ -12,9 +12,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
-import pers.zhixilang.lego.srd.core.codec.NettyDecoder;
-import pers.zhixilang.lego.srd.core.codec.NettyEncoder;
-import pers.zhixilang.lego.srd.core.property.SrdProperty;
+import pers.zhixilang.lego.srd.client.config.SrdClientConfig;
+import pers.zhixilang.lego.srd.base.codec.NettyDecoder;
+import pers.zhixilang.lego.srd.base.codec.NettyEncoder;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -36,7 +36,7 @@ public class NettyClient {
      */
     private static final int NETTY_RETRY_PERIOD_SEC = 10;
 
-    public void startup(SrdProperty property) throws Exception {
+    public void startup(SrdClientConfig clientConfig) throws Exception {
         workers = new NioEventLoopGroup(1);
 
         NettyClientHandler clientHandler = new NettyClientHandler(this);
@@ -50,7 +50,7 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new IdleStateHandler(0, 0,
-                                property.getClient().getHearBeatIntervalMs() / 1000))
+                                clientConfig.getClient().getHearBeatIntervalMs() / 1000))
                                 .addLast(new NettyDecoder())
                                 .addLast(new NettyEncoder())
                                 .addLast(clientHandler);
@@ -60,7 +60,7 @@ public class NettyClient {
 
         InetSocketAddress address;
         try {
-            String[] arr = property.getClient().getRegistryUrl().split(":");
+            String[] arr = clientConfig.getClient().getServiceUrl().split(":");
             address = new InetSocketAddress(arr[0], Integer.parseInt(arr[1]));
         }  catch (Exception e) {
             throw new IllegalArgumentException("property lego.srd.server.address illegal.");

@@ -4,10 +4,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.extern.slf4j.Slf4j;
-import pers.zhixilang.lego.srd.core.pojo.InstanceInfo;
-import pers.zhixilang.lego.srd.core.pojo.Key;
-import pers.zhixilang.lego.srd.core.pojo.Value;
-import pers.zhixilang.lego.srd.core.property.SrdProperty;
+import pers.zhixilang.lego.srd.base.pojo.InstanceInfo;
+import pers.zhixilang.lego.srd.base.pojo.Key;
+import pers.zhixilang.lego.srd.base.pojo.Value;
+import pers.zhixilang.lego.srd.server.config.SrdServerConfig;
 import pers.zhixilang.lego.srd.server.exception.ServerException;
 import pers.zhixilang.lego.srd.server.pojo.Lease;
 
@@ -52,10 +52,10 @@ public class MemoryCacheManager implements CacheManager {
 
     private AtomicLong globalVersion = new AtomicLong(0);
 
-    private SrdProperty property;
+    private SrdServerConfig config;
 
-    public MemoryCacheManager(SrdProperty property) {
-        this.property = property;
+    public MemoryCacheManager(SrdServerConfig config) {
+        this.config = config;
 
 
         readWriteMap = CacheBuilder.newBuilder()
@@ -168,7 +168,7 @@ public class MemoryCacheManager implements CacheManager {
      * 缓存同步task
      */
     private void cacheSyncTask() {
-        long syncCacheMs = property.getServer().getSyncCacheIntervalMs();
+        long syncCacheMs = config.getServer().getSyncCacheIntervalMs();
 
         new Timer("srd-cache-update").schedule(new TimerTask() {
             @Override
@@ -191,6 +191,11 @@ public class MemoryCacheManager implements CacheManager {
     }
 
     public void evict(InstanceInfo instance) {
+        // TODO
+    }
 
+    @Override
+    public SrdServerConfig getConfig() {
+        return this.config;
     }
 }
