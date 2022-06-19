@@ -12,6 +12,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  * date 2022-03-16 10:21
  */
 public class NettyDecoder extends LengthFieldBasedFrameDecoder {
+    // TODO 测试消息长度超过65535,超过Math(2, 4*8)
     public NettyDecoder() {
         super(65535, 0, 4, 0, 4);
     }
