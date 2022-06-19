@@ -1,76 +1,15 @@
-##### 简易版的服务注册与发现中心，注册中心使用redis实现。
-
-1. 引入依赖
-
-   ```xml
-   <dependency>
-               <groupId>pers.zhixilang.lego.srd</groupId>
-               <artifactId>parent</artifactId>
-               <version>1.0.0-SNAPSHOT</version>
-           </dependency>
-   ```
+##### 简易版的服务注册与发现中心，`server`和`client`之间通信使用[Netty](https://netty.io/wiki/user-guide-for-4.x.html)实现。
+-  [ ] 自定义协议
 
 
-2. 新增配置文件route.xml
+/*
++---------------------------------------------------------------+
+| 魔数 2byte | 协议版本号 1byte | 序列化算法 1byte | 报文类型 1byte  |
++---------------------------------------------------------------+
+| 状态 1byte |        保留字段 4byte     |      数据长度 4byte     | 
++---------------------------------------------------------------+
+|                   数据内容 （长度不定）          | 校验字段 2byte |
++---------------------------------------------------------------+
+*/
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:bridge="http://bridge.glmapper.com/schema/route"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:route="http://bridge.glmapper.com/schema/route"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://bridge.glmapper.com/schema/route
-       http://bridge.glmapper.com/schema/route.xsd">
-
-        <route:route prefix="/api/bill" route="http://127.0.0.1:9898/api/bill" />
-        <route:route prefix="/api/user" route="http://127.0.0.1:9898/api/user" />
-
-        <route:registry host="127.0.0.1" port="6379" password="" timeout="1000" period="3000" />
-
-        <route:discover  host="127.0.0.1" port="6379" password="" timeout="1000" period="1000"/>
-</beans>
-
-```
-
-
-
-3. 使配置生效
-
-- 注解方式
-
-  ```java
-  @SpringBootApplication
-  @ImportResource({"route.xml"})
-  public class MainApplication {
-      public static void main(String[] args) {
-          SpringApplication application = new SpringApplication(MainApplication.class);
-          application.run(args);
-      }
-  }
-  ```
-
-  
-
-- API方式
-
-  ```java
-  public class MainApplication {
-      public static void main(String[] args) throws Exception{
-          ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("route.xml");
-          }
-    }
-  ```
-
-
-
-
-
-# 协议格式
-## req
-1: event
-2~8: id
-8~12：消息长度 
-14 ~ n: 消息内容
-
-## res 
+https://www.cnblogs.com/caoweixiong/p/14663492.html
